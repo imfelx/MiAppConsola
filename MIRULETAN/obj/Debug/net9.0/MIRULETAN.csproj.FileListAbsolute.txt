@@ -1,0 +1,15 @@
+C:\Users\Usuario\Desktop\Proyectos\MiAppConsola\MIRULETAn\bin\Debug\net9.0\MIRULETAN.exe
+C:\Users\Usuario\Desktop\Proyectos\MiAppConsola\MIRULETAn\bin\Debug\net9.0\MIRULETAN.deps.json
+C:\Users\Usuario\Desktop\Proyectos\MiAppConsola\MIRULETAn\bin\Debug\net9.0\MIRULETAN.runtimeconfig.json
+C:\Users\Usuario\Desktop\Proyectos\MiAppConsola\MIRULETAn\bin\Debug\net9.0\MIRULETAN.dll
+C:\Users\Usuario\Desktop\Proyectos\MiAppConsola\MIRULETAn\bin\Debug\net9.0\MIRULETAN.pdb
+C:\Users\Usuario\Desktop\Proyectos\MiAppConsola\MIRULETAn\obj\Debug\net9.0\MIRULETAN.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Usuario\Desktop\Proyectos\MiAppConsola\MIRULETAn\obj\Debug\net9.0\MIRULETAN.AssemblyInfoInputs.cache
+C:\Users\Usuario\Desktop\Proyectos\MiAppConsola\MIRULETAn\obj\Debug\net9.0\MIRULETAN.AssemblyInfo.cs
+C:\Users\Usuario\Desktop\Proyectos\MiAppConsola\MIRULETAn\obj\Debug\net9.0\MIRULETAN.csproj.CoreCompileInputs.cache
+C:\Users\Usuario\Desktop\Proyectos\MiAppConsola\MIRULETAn\obj\Debug\net9.0\MIRULETAN.sourcelink.json
+C:\Users\Usuario\Desktop\Proyectos\MiAppConsola\MIRULETAn\obj\Debug\net9.0\MIRULETAN.dll
+C:\Users\Usuario\Desktop\Proyectos\MiAppConsola\MIRULETAn\obj\Debug\net9.0\refint\MIRULETAN.dll
+C:\Users\Usuario\Desktop\Proyectos\MiAppConsola\MIRULETAn\obj\Debug\net9.0\MIRULETAN.pdb
+C:\Users\Usuario\Desktop\Proyectos\MiAppConsola\MIRULETAn\obj\Debug\net9.0\MIRULETAN.genruntimeconfig.cache
+C:\Users\Usuario\Desktop\Proyectos\MiAppConsola\MIRULETAn\obj\Debug\net9.0\ref\MIRULETAN.dll

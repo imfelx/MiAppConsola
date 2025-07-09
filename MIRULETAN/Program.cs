@@ -19,17 +19,17 @@ class Program
         int opcion;
         do
         {
-        Console.Clear();
-        Console.ForegroundColor = ConsoleColor.Cyan;
-        Console.WriteLine("╔════════════════════════════════════════╗");
-        Console.WriteLine("║       M E N U   P R I N C I P A L      ║");
-        Console.WriteLine("╠════════════════════════════════════════╣");
-        Console.WriteLine("║ 1. Iniciar Selección                   ║");
-        Console.WriteLine("║ 2. Editar Estudiantes                  ║");
-        Console.WriteLine("║ 3. Ver historial de selección          ║");
-        Console.WriteLine("║ 4. Salir                               ║");
-        Console.WriteLine("╚════════════════════════════════════════╝");
-        Console.ResetColor();
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("╔════════════════════════════════════════╗");
+            Console.WriteLine("║       M E N U   P R I N C I P A L      ║");
+            Console.WriteLine("╠════════════════════════════════════════╣");
+            Console.WriteLine("║ 1. Iniciar Selección                   ║");
+            Console.WriteLine("║ 2. Editar Estudiantes                  ║");
+            Console.WriteLine("║ 3. Ver historial de selección          ║");
+            Console.WriteLine("║ 4. Salir                               ║");
+            Console.WriteLine("╚════════════════════════════════════════╝");
+            Console.ResetColor();
             Console.Write(" Seleccione una opción: ");
             opcion = Convert.ToInt32(Console.ReadLine());
 
@@ -40,11 +40,15 @@ class Program
             {
                 case 1:
                     IniciarSeleccion();
-                    Console.WriteLine("\nPresione una tecla para volver al menú...");
+                    Console.WriteLine(" Presione una tecla para volver al menú...");
                     Console.ReadKey();
                     break;
 
                 case 2:
+                    EditarEstudiantes();
+                    Console.WriteLine(" Presione una tecla para volver al menú...");
+                    Console.ReadKey();
+                    break;
                 case 3:
                     Console.WriteLine("Esta opción aún no está disponible. Presione una tecla para continuar...");
                     Console.ReadKey();
@@ -132,5 +136,24 @@ class Program
         }
 
         return null!;
+    }
+
+
+    static void EditarEstudiantes()
+    {
+        Console.Clear();
+        Console.ForegroundColor = ConsoleColor.Cyan;
+        Console.WriteLine("╔════════════════════════════════════════╗");
+        Console.WriteLine("║     E D I T A R  E S T U D I A N T E   ║");
+        Console.WriteLine("╠════════════════════════════════════════╣");
+        Console.WriteLine("║ 1. Agregar Nuevo                       ║");
+        Console.WriteLine("║ 2. Modificar Estudiante                ║");
+        Console.WriteLine("║ 3. Eliminar Estudiante                 ║");
+        Console.WriteLine("║ 4. Volver al menu principal            ║");
+        Console.WriteLine("╚════════════════════════════════════════╝");
+        Console.ResetColor();
+        Console.Write(" Seleccione una opción: ");
+        opcion = Convert.ToInt32(Console.ReadLine());
+            
     }
 }
