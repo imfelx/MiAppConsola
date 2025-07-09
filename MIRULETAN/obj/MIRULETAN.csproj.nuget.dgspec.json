@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Usuario\\Desktop\\Proyectos\\MiAppConsola\\MIRULETAn\\MIRULETAN.csproj": {}
+    "C:\\Users\\Usuario\\Desktop\\Proyectos\\MiAppConsola\\MIRULETAN\\MIRULETAN.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Usuario\\Desktop\\Proyectos\\MiAppConsola\\MIRULETAn\\MIRULETAN.csproj": {
+    "C:\\Users\\Usuario\\Desktop\\Proyectos\\MiAppConsola\\MIRULETAN\\MIRULETAN.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Usuario\\Desktop\\Proyectos\\MiAppConsola\\MIRULETAn\\MIRULETAN.csproj",
+        "projectUniqueName": "C:\\Users\\Usuario\\Desktop\\Proyectos\\MiAppConsola\\MIRULETAN\\MIRULETAN.csproj",
         "projectName": "MIRULETAN",
-        "projectPath": "C:\\Users\\Usuario\\Desktop\\Proyectos\\MiAppConsola\\MIRULETAn\\MIRULETAN.csproj",
+        "projectPath": "C:\\Users\\Usuario\\Desktop\\Proyectos\\MiAppConsola\\MIRULETAN\\MIRULETAN.csproj",
         "packagesPath": "C:\\Users\\Usuario\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Usuario\\Desktop\\Proyectos\\MiAppConsola\\MIRULETAn\\obj\\",
+        "outputPath": "C:\\Users\\Usuario\\Desktop\\Proyectos\\MiAppConsola\\MIRULETAN\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Usuario\\AppData\\Roaming\\NuGet\\NuGet.Config"

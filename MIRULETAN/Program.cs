@@ -141,6 +141,8 @@ class Program
 
     static void EditarEstudiantes()
     {
+
+        int opcion;
         Console.Clear();
         Console.ForegroundColor = ConsoleColor.Cyan;
         Console.WriteLine("╔════════════════════════════════════════╗");
@@ -154,6 +156,23 @@ class Program
         Console.ResetColor();
         Console.Write(" Seleccione una opción: ");
         opcion = Convert.ToInt32(Console.ReadLine());
-            
+
+        switch (opcion)
+        {
+            case 1:
+                //AgregarEstudiante();
+                break;
+            case 2:
+                //ModificarEstudiante();
+                break;
+            case 3:
+                //EliminarEstudiante();
+                break;
+            case 4:
+            MostrarMenu();
+             
+                Console.WriteLine("Volviendo al menú principal...");
+                break;
+            }
     }
 }
