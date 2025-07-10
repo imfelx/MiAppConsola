@@ -2,7 +2,7 @@
 //HOLAAAAAAAA 
 class Program
 {
-    static string[] Estudiantes = new string[] { "Felix", "Juan", "Pedro", "Maria" };
+    static string[] Estudiantes = new string[3];
     static string[] Roles = new string[] { "Desarrollador en Vivo", "Facilitador de Ejercicio a Desarrollar" };
     static string[] EstudiantesSeleccionados = new string[30];
     static int contadorSeleccionados = 0;
@@ -50,7 +50,8 @@ class Program
                     Console.ReadKey();
                     break;
                 case 3:
-                    Console.WriteLine("Esta opción aún no está disponible. Presione una tecla para continuar...");
+                    MostrarHistorialSeleccion();
+                    Console.WriteLine(" Presione una tecla para volver al menú...");
                     Console.ReadKey();
                     break;
 
@@ -67,17 +68,17 @@ class Program
         } while (opcion != 4);
     }
 
+    static Random rnd = new Random();
+
     static void IniciarSeleccion()
     {
-
-        // Limpiar seleccionados de esta vuelta (pero NO el historial completo)
         Array.Clear(EstudiantesSeleccionados, 0, EstudiantesSeleccionados.Length);
         contadorSeleccionados = 0;
 
         for (int i = 0; i < Roles.Length; i++)
         {
             string rol = Roles[i];
-            string estudiante = SeleccionarEstudianteDisponible(rol);
+            string estudiante = SeleccionarEstudianteAleatorio(rol);
             if (estudiante != null)
             {
                 Console.WriteLine($"El estudiante seleccionado para '{rol}' es: {estudiante}");
@@ -93,23 +94,26 @@ class Program
         }
     }
 
-    static string SeleccionarEstudianteDisponible(string rol)
+    static string SeleccionarEstudianteAleatorio(string rol)
     {
+        // Crear lista temporal de estudiantes disponibles para este rol
+        string[] disponibles = new string[Estudiantes.Length];
+        int countDisponibles = 0;
+
         for (int i = 0; i < Estudiantes.Length; i++)
         {
             string estudiante = Estudiantes[i];
-            bool yaTuvoEsteRol = false;
+            if (string.IsNullOrWhiteSpace(estudiante))
+                continue;
 
-            // Verificamos si este estudiante ya tuvo este rol antes
+            bool yaTuvoEsteRol = false;
             for (int j = 0; j < contadorHistorial; j++)
             {
-                // Formato guardado: "ROL: ESTUDIANTE"
-                string[] partes = HistorialSeleccion[j].Split(":");
+                string[] partes = HistorialSeleccion[j].Split(':');
                 if (partes.Length == 2)
                 {
                     string rolPrevio = partes[0].Trim();
                     string estudiantePrevio = partes[1].Trim();
-
                     if (estudiantePrevio == estudiante && rolPrevio == rol)
                     {
                         yaTuvoEsteRol = true;
@@ -118,7 +122,6 @@ class Program
                 }
             }
 
-            // Si no ha tenido este rol en ninguna vuelta, lo podemos seleccionar
             bool yaSeleccionadoEstaVuelta = false;
             for (int j = 0; j < contadorSeleccionados; j++)
             {
@@ -129,24 +132,51 @@ class Program
                 }
             }
 
-            if (!yaTuvoEsteRol && !yaSeleccionadoEstaVuelta)
+            // Evitar que un estudiante sea seleccionado dos veces para el mismo rol en la misma ronda
+            bool yaEstaEnHistorialEstaRonda = false;
+            for (int j = contadorHistorial - Roles.Length; j < contadorHistorial; j++)
             {
-                return estudiante;
+                if (j >= 0 && HistorialSeleccion[j] != null)
+                {
+                    string[] partes = HistorialSeleccion[j].Split(':');
+                    if (partes.Length == 2)
+                    {
+                        string rolPrevio = partes[0].Trim();
+                        string estudiantePrevio = partes[1].Trim();
+                        if (estudiantePrevio == estudiante && rolPrevio == rol)
+                        {
+                            yaEstaEnHistorialEstaRonda = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (!yaTuvoEsteRol && !yaSeleccionadoEstaVuelta && !yaEstaEnHistorialEstaRonda)
+            {
+                disponibles[countDisponibles] = estudiante;
+                countDisponibles++;
             }
         }
 
-        return null!;
+        if (countDisponibles == 0)
+            return null!;
+
+        // Seleccionar aleatoriamente un estudiante de disponibles
+        int indiceAleatorio = rnd.Next(countDisponibles);
+        return disponibles[indiceAleatorio];
     }
+
 
 
     static void EditarEstudiantes()
     {
 
-        int opcion;
+
         Console.Clear();
         Console.ForegroundColor = ConsoleColor.Cyan;
         Console.WriteLine("╔════════════════════════════════════════╗");
-        Console.WriteLine("║     E D I T A R  E S T U D I A N T E   ║");
+        Console.WriteLine("║    E D I T A R  E S T U D I A N T E    ║");
         Console.WriteLine("╠════════════════════════════════════════╣");
         Console.WriteLine("║ 1. Agregar Nuevo                       ║");
         Console.WriteLine("║ 2. Modificar Estudiante                ║");
@@ -155,24 +185,193 @@ class Program
         Console.WriteLine("╚════════════════════════════════════════╝");
         Console.ResetColor();
         Console.Write(" Seleccione una opción: ");
-        opcion = Convert.ToInt32(Console.ReadLine());
+        int opcion = Convert.ToInt32(Console.ReadLine());
 
         switch (opcion)
         {
             case 1:
-                //AgregarEstudiante();
+                AgregarEstudiante();
                 break;
             case 2:
-                //ModificarEstudiante();
+                ModificarEstudiante();
                 break;
             case 3:
-                //EliminarEstudiante();
+                EliminarEstudiante();
                 break;
             case 4:
-            MostrarMenu();
-             
+                MostrarMenu();
+
                 Console.WriteLine("Volviendo al menú principal...");
                 break;
-            }
+        }
     }
+
+    static void AgregarEstudiante()
+    {
+        int espaciosDisponibles = 0;
+        for (int i = 0; i < Estudiantes.Length; i++)
+        {
+            if (string.IsNullOrWhiteSpace(Estudiantes[i]))
+                espaciosDisponibles++;
+        }
+        if (espaciosDisponibles == 0)
+        {
+            Console.WriteLine("No hay espacio disponible para más estudiantes.");
+            return;
+        }
+
+        while (espaciosDisponibles > 0)
+        {
+            Console.Write($"Ingrese el nombre del nuevo estudiante (quedan {espaciosDisponibles}) o presione Enter para cancelar: ");
+            string? nuevo = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(nuevo))
+            {
+                Console.WriteLine("Ingreso cancelado.");
+                break;
+            }
+
+            // Validar duplicado (sin foreach ni métodos)
+            bool duplicado = false;
+            for (int j = 0; j < Estudiantes.Length; j++)
+            {
+                if (Estudiantes[j] == nuevo)
+                {
+                    duplicado = true;
+                    break;
+                }
+            }
+
+            if (duplicado)
+            {
+                Console.WriteLine("Ese estudiante ya existe.");
+                continue;
+            }
+
+            // Buscar el primer espacio vacío
+            bool agregado = false;
+            for (int i = 0; i < Estudiantes.Length; i++)
+            {
+                if (string.IsNullOrWhiteSpace(Estudiantes[i]))
+                {
+                    Estudiantes[i] = nuevo;
+                    agregado = true;
+                    espaciosDisponibles--;
+                    Console.WriteLine("Estudiante agregado exitosamente.");
+                    break;
+                }
+            }
+            if (!agregado)
+            {
+                Console.WriteLine("No hay espacio disponible para más estudiantes.");
+                break;
+            }
+        }
+    }
+    static void ModificarEstudiante()
+    {
+        Console.WriteLine("Lista de estudiantes:");
+        for (int i = 0; i < Estudiantes.Length; i++)
+        {
+            if (!string.IsNullOrWhiteSpace(Estudiantes[i]))
+                Console.WriteLine((i + 1) + ". " + Estudiantes[i]);
+        }
+
+        Console.Write("Número del estudiante a modificar (o 0 para cancelar): ");
+        string? input = Console.ReadLine();
+        int seleccion;
+        if (!int.TryParse(input, out seleccion) || seleccion < 0 || seleccion > Estudiantes.Length)
+        {
+            Console.WriteLine("Número inválido.");
+            return;
+        }
+        if (seleccion == 0)
+        {
+            Console.WriteLine("Cancelado.");
+            return;
+        }
+        int posicion = seleccion - 1;
+        if (posicion >= 0 && posicion < Estudiantes.Length && !string.IsNullOrWhiteSpace(Estudiantes[posicion]))
+        {
+            Console.Write("Ingrese el nuevo nombre: ");
+            string? nuevoNombre = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(nuevoNombre))
+            {
+                Console.WriteLine("Modificación cancelada.");
+                return;
+            }
+            // Verificar duplicado simple
+            for (int i = 0; i < Estudiantes.Length; i++)
+            {
+                if (i != posicion && Estudiantes[i] == nuevoNombre)
+                {
+                    Console.WriteLine("Ese nombre ya existe.");
+                    return;
+                }
+            }
+            Estudiantes[posicion] = nuevoNombre;
+            Console.WriteLine("Estudiante modificado.");
+        }
+        else
+        {
+            Console.WriteLine("Número inválido.");
+        }
+    }
+
+    static void EliminarEstudiante()
+    {
+        Console.WriteLine("Lista de estudiantes:");
+        for (int i = 0; i < Estudiantes.Length; i++)
+        {
+            if (Estudiantes[i] != null && Estudiantes[i] != "")
+                Console.WriteLine((i + 1) + ". " + Estudiantes[i]);
+        }
+
+        Console.Write("Número del estudiante a eliminar: ");
+        int seleccion = Convert.ToInt32(Console.ReadLine());
+        int posicion = seleccion - 1;
+
+        if (seleccion == 0)
+        {
+            Console.WriteLine("Cancelado.");
+            return;
+        }
+
+        if (posicion >= 0 && posicion < Estudiantes.Length && Estudiantes[posicion] != null && Estudiantes[posicion] != "")
+        {
+            Estudiantes[posicion] = "";
+            Console.WriteLine("Estudiante eliminado.");
+        }
+        else
+        {
+            Console.WriteLine("Número inválido.");
+        }
+    }
+
+
+
+static void MostrarHistorialSeleccion()
+{
+    Console.Clear();
+    Console.ForegroundColor = ConsoleColor.Cyan;
+    Console.WriteLine("╔═════════════════════════════════════════════════╗");
+    Console.WriteLine("║   H I S T O R I A L   D E   S E L E C C I Ó N   ║");
+    Console.WriteLine("╠═════════════════════════════════════════════════╣");
+
+    if (contadorHistorial == 0)
+    {
+        Console.WriteLine("No hay historial de selección.");
+    }
+    else
+    {
+        for (int i = 0; i < contadorHistorial; i++)
+        {
+            Console.WriteLine(HistorialSeleccion[i]);
+        }
+    }
+
+    Console.ResetColor();
+    Console.WriteLine("Presione una tecla para volver al menú...");
+    Console.ReadKey();
+}
+
 }
