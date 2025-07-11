@@ -1,5 +1,8 @@
 ﻿using System;
-//HOLAAAAAAAA 
+using System.IO;
+using System.Threading;
+using NAudio.Wave;
+
 class Program
 {
     static string[] Estudiantes = new string[3];
@@ -8,6 +11,8 @@ class Program
     static int contadorSeleccionados = 0;
     static string[] HistorialSeleccion = new string[30];
     static int contadorHistorial = 0;
+
+    static Random rnd = new Random();
 
     static void Main()
     {
@@ -31,10 +36,8 @@ class Program
             Console.WriteLine("╚════════════════════════════════════════╝");
             Console.ResetColor();
             Console.Write(" Seleccione una opción: ");
-            opcion = Convert.ToInt32(Console.ReadLine());
 
-
-
+            if (!int.TryParse(Console.ReadLine(), out opcion)) opcion = 0;
 
             switch (opcion)
             {
@@ -43,7 +46,6 @@ class Program
                     Console.WriteLine(" Presione una tecla para volver al menú...");
                     Console.ReadKey();
                     break;
-
                 case 2:
                     EditarEstudiantes();
                     Console.WriteLine(" Presione una tecla para volver al menú...");
@@ -54,11 +56,9 @@ class Program
                     Console.WriteLine(" Presione una tecla para volver al menú...");
                     Console.ReadKey();
                     break;
-
                 case 4:
                     Console.WriteLine("Saliendo del programa...");
                     break;
-
                 default:
                     Console.WriteLine("Opción inválida. Presione una tecla para continuar...");
                     Console.ReadKey();
@@ -68,12 +68,55 @@ class Program
         } while (opcion != 4);
     }
 
-    static Random rnd = new Random();
-
     static void IniciarSeleccion()
     {
         Array.Clear(EstudiantesSeleccionados, 0, EstudiantesSeleccionados.Length);
         contadorSeleccionados = 0;
+
+        ReproducirAudio("LuzVerde.mp3");
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine("🟢 Jugaremos... Muévete... ¡Luz verde!");
+        Console.ResetColor();
+
+        Console.WriteLine("\n🔄 Seleccionando aleatoriamente... espera la señal de alto...");
+        bool detener = false;
+        Thread hilo = new Thread(() => SimularRuletaEnVivo(ref detener));
+        hilo.Start();
+ 
+ 
+        ReproducirAudio("LuzRoja.mp3");
+        detener = true;
+        hilo.Join();
+
+
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("\n🔴 ¡Luz roja! La selección se ha detenido.");
+        Console.ResetColor();
+       
+    }
+
+    static void SimularRuletaEnVivo(ref bool detener)
+    {
+        var rand = new Random();
+        while (!detener)
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            for (int j = 0; j < Roles.Length; j++)
+            {
+                string rol = Roles[j];
+                string estudiante = Estudiantes[rand.Next(Estudiantes.Length)];
+                Console.WriteLine($"🔄 {rol}: {estudiante}");
+            }
+            Console.ResetColor();
+            Thread.Sleep(150);
+
+            for (int j = 0; j < Roles.Length; j++)
+            {
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                Console.Write(new string(' ', Console.WindowWidth));
+                Console.SetCursorPosition(0, Console.CursorTop);
+            }
+        }
 
         for (int i = 0; i < Roles.Length; i++)
         {
@@ -81,44 +124,40 @@ class Program
             string estudiante = SeleccionarEstudianteAleatorio(rol);
             if (estudiante != null)
             {
-                Console.WriteLine($"El estudiante seleccionado para '{rol}' es: {estudiante}");
-                HistorialSeleccion[contadorHistorial] = $"{rol}: {estudiante}";
-                contadorHistorial++;
-                EstudiantesSeleccionados[contadorSeleccionados] = estudiante;
-                contadorSeleccionados++;
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine($"🎯 {rol}: {estudiante}");
+                Console.ResetColor();
+
+                HistorialSeleccion[contadorHistorial++] = $"{rol}: {estudiante}";
+                EstudiantesSeleccionados[contadorSeleccionados++] = estudiante;
             }
             else
             {
-                Console.WriteLine($"No hay estudiantes disponibles para el rol '{rol}'.");
+                Console.WriteLine($"❌ {rol}: (No disponible)");
+                HistorialSeleccion[contadorHistorial++] = $"{rol}: (No disponible)";
             }
+            Thread.Sleep(700);
         }
     }
 
     static string SeleccionarEstudianteAleatorio(string rol)
     {
-        // Crear lista temporal de estudiantes disponibles para este rol
         string[] disponibles = new string[Estudiantes.Length];
         int countDisponibles = 0;
 
         for (int i = 0; i < Estudiantes.Length; i++)
         {
             string estudiante = Estudiantes[i];
-            if (string.IsNullOrWhiteSpace(estudiante))
-                continue;
+            if (string.IsNullOrWhiteSpace(estudiante)) continue;
 
             bool yaTuvoEsteRol = false;
             for (int j = 0; j < contadorHistorial; j++)
             {
                 string[] partes = HistorialSeleccion[j].Split(':');
-                if (partes.Length == 2)
+                if (partes.Length == 2 && partes[1].Trim() == estudiante && partes[0].Trim() == rol)
                 {
-                    string rolPrevio = partes[0].Trim();
-                    string estudiantePrevio = partes[1].Trim();
-                    if (estudiantePrevio == estudiante && rolPrevio == rol)
-                    {
-                        yaTuvoEsteRol = true;
-                        break;
-                    }
+                    yaTuvoEsteRol = true;
+                    break;
                 }
             }
 
@@ -132,44 +171,51 @@ class Program
                 }
             }
 
-            // Evitar que un estudiante sea seleccionado dos veces para el mismo rol en la misma ronda
             bool yaEstaEnHistorialEstaRonda = false;
             for (int j = contadorHistorial - Roles.Length; j < contadorHistorial; j++)
             {
                 if (j >= 0 && HistorialSeleccion[j] != null)
                 {
                     string[] partes = HistorialSeleccion[j].Split(':');
-                    if (partes.Length == 2)
+                    if (partes.Length == 2 && partes[1].Trim() == estudiante && partes[0].Trim() == rol)
                     {
-                        string rolPrevio = partes[0].Trim();
-                        string estudiantePrevio = partes[1].Trim();
-                        if (estudiantePrevio == estudiante && rolPrevio == rol)
-                        {
-                            yaEstaEnHistorialEstaRonda = true;
-                            break;
-                        }
+                        yaEstaEnHistorialEstaRonda = true;
+                        break;
                     }
                 }
             }
 
             if (!yaTuvoEsteRol && !yaSeleccionadoEstaVuelta && !yaEstaEnHistorialEstaRonda)
             {
-                disponibles[countDisponibles] = estudiante;
-                countDisponibles++;
+                disponibles[countDisponibles++] = estudiante;
             }
         }
 
-        if (countDisponibles == 0)
-            return null!;
-
-        // Seleccionar aleatoriamente un estudiante de disponibles
-        int indiceAleatorio = rnd.Next(countDisponibles);
-        return disponibles[indiceAleatorio];
+        return countDisponibles == 0 ? null : disponibles[rnd.Next(countDisponibles)];
     }
 
-
-
-    static void EditarEstudiantes()
+    static void ReproducirAudio(string archivo)
+    {
+        if (!File.Exists(archivo))
+        {
+            Console.WriteLine($"⚠️ Archivo '{archivo}' no encontrado.");
+            return;
+        }
+        try
+        {
+            using var audioFile = new AudioFileReader(archivo);
+            using var output = new WaveOutEvent();
+            output.Init(audioFile);
+            output.Play();
+            while (output.PlaybackState == PlaybackState.Playing)
+                Thread.Sleep(100);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error al reproducir el audio: {ex.Message}");
+        }
+    }
+       static void EditarEstudiantes()
     {
 
 

@@ -13,3 +13,11 @@ C:\Users\Usuario\Desktop\Proyectos\MiAppConsola\MIRULETAn\obj\Debug\net9.0\refin
 C:\Users\Usuario\Desktop\Proyectos\MiAppConsola\MIRULETAn\obj\Debug\net9.0\MIRULETAN.pdb
 C:\Users\Usuario\Desktop\Proyectos\MiAppConsola\MIRULETAn\obj\Debug\net9.0\MIRULETAN.genruntimeconfig.cache
 C:\Users\Usuario\Desktop\Proyectos\MiAppConsola\MIRULETAn\obj\Debug\net9.0\ref\MIRULETAN.dll
+C:\Users\Usuario\Desktop\Proyectos\MiAppConsola\MIRULETAN\bin\Debug\net9.0\NAudio.dll
+C:\Users\Usuario\Desktop\Proyectos\MiAppConsola\MIRULETAN\bin\Debug\net9.0\NAudio.Asio.dll
+C:\Users\Usuario\Desktop\Proyectos\MiAppConsola\MIRULETAN\bin\Debug\net9.0\NAudio.Core.dll
+C:\Users\Usuario\Desktop\Proyectos\MiAppConsola\MIRULETAN\bin\Debug\net9.0\NAudio.Midi.dll
+C:\Users\Usuario\Desktop\Proyectos\MiAppConsola\MIRULETAN\bin\Debug\net9.0\NAudio.Wasapi.dll
+C:\Users\Usuario\Desktop\Proyectos\MiAppConsola\MIRULETAN\bin\Debug\net9.0\NAudio.WinMM.dll
+C:\Users\Usuario\Desktop\Proyectos\MiAppConsola\MIRULETAN\obj\Debug\net9.0\MIRULETAN.csproj.AssemblyReference.cache
+C:\Users\Usuario\Desktop\Proyectos\MiAppConsola\MIRULETAN\obj\Debug\net9.0\MIRULETAN.csproj.Up2Date
